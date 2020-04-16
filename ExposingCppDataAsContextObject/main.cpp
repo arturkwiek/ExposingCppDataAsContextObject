@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QQmlApplicationEngine>
+#include "propertywrapper.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,13 +9,18 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QString strFirstName = "John";
-    QString strLastName = "Doe";
+//    QString strFirstName = "John";
+//    QString strLastName = "Doe";
 
+    PropertyWrapper propWrapper;
     QQmlApplicationEngine engine;
 
-    engine.rootContext()->setContextProperty("mFirstName", QVariant::fromValue(strFirstName));
-    engine.rootContext()->setContextProperty("mLastName",QVariant::fromValue(strLastName));
+    propWrapper.setLastname("Doe");
+    propWrapper.setFirstname("John");
+//    engine.rootContext()->setContextProperty("mFirstName", QVariant::fromValue(strFirstName));
+//    engine.rootContext()->setContextProperty("mLastName",QVariant::fromValue(strLastName));
+    engine.rootContext()->setContextObject(&propWrapper);
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
